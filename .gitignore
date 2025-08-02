@@ -1,0 +1,9 @@
+# Ignore node_modules in both frontend and backend
+backend/node_modules/
+wellness-app/node_modules/
+
+# Ignore all .env files
+backend/.env
+backend/.env.*
+wellness-app/.env
+wellness-app/.env.*
