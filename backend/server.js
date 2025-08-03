@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   try {
     await connectDB();  // Wait for DB connection before continuing
-    const allowedOrigins = ["http://localhost:5173", "https://serenity-ve74.vercel.app/"]
+    const allowedOrigins = ["http://localhost:5173", "https://serenity-ve74.vercel.app"]
     app.use(express.json())
     app.use(cookieParser())
     app.use(cors({
