@@ -26,7 +26,7 @@ const App = () => {
         <Route path="/email-verify" element={<EmailVerify />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/edit-draft/:id" element={<EditDraftPage />} />
-        <Route path="/my-published-sessions/:id" element={<MyPublishedSessionsPage />} />
+        <Route path="/published/:id" element={<MyPublishedSessionsPage />} />
       </Routes>
     </div>
   );
