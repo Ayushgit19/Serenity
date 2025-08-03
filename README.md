@@ -72,9 +72,6 @@ Serenity is a full-stack wellness app where users can create, save, and publish 
 
 ---
 
-## 🖼️ Screenshots
-
-> _Add screenshots of your dashboard, timer, and cards if possible for more impact._
 
 ---
 
@@ -90,9 +87,7 @@ serenity/
 ├── .env
 └── package.json
 
-yaml
-Copy
-Edit
+
 
 ---
 
@@ -119,20 +114,14 @@ git clone https://github.com/ayushgit19/serenity
 cd serenity
 Install dependencies:
 
-bash
-Copy
-Edit
+
 npm install
 Create a .env file with:
 
-ini
-Copy
-Edit
+
 VITE_BACKEND_URL=http://localhost:3000
 Start the frontend:
 
-bash
-Copy
-Edit
+
 npm run dev
 Make sure the backend is running on the same port mentioned in VITE_BACKEND_URL.
