@@ -6,8 +6,7 @@ import "./index.css";
 import { SessionProvider } from "./context/SessionContext";
 import { AppContextProvider } from "./context/AppContext.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render( 
     <BrowserRouter>
       <AppContextProvider>
         <SessionProvider>
@@ -15,5 +14,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </SessionProvider>
       </AppContextProvider>
     </BrowserRouter>
-  </React.StrictMode>
 );

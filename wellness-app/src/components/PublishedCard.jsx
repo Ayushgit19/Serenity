@@ -2,25 +2,24 @@ import React, { useContext } from "react";
 import { Clock, Edit, Trash2, Play } from "lucide-react";
 import { SessionContext } from "../context/SessionContext";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PublishedCard = ({ session }) => {
+  const navigate = useNavigate();
   const { editSession, deleteSession } = useContext(SessionContext);
 
-  // Handle editing (convert back to draft)
   const handleEdit = () => {
-    editSession(session);
-    toast.success("Session moved to drafts for editing");
+    toast.success("Redirecting to edit draft...");
+    navigate(`/edit-draft/${session._id}`);
   };
 
-  // Handle deletion
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this session?")) {
-      deleteSession(session.id);
+      deleteSession(session._id); 
       toast.success("Session deleted successfully");
     }
   };
 
-  // Get display tags based on category and difficulty
   const getDisplayTags = () => {
     const tags = [];
     if (session.category) {
@@ -40,9 +39,18 @@ const PublishedCard = ({ session }) => {
 
   const displayTags = getDisplayTags();
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "Today";
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch {
+      return "Today";
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl p-5 border border-gray-100 hover:shadow-md transition-all duration-200">
-      {/* Header with title and published badge */}
+      {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
@@ -79,7 +87,7 @@ const PublishedCard = ({ session }) => {
         <span className="text-xs">{session.duration || "10"} min</span>
       </div>
 
-      {/* Action buttons */}
+      {/* Action Buttons */}
       <div className="flex gap-2 mb-3">
         <button
           onClick={handleEdit}
@@ -102,10 +110,10 @@ const PublishedCard = ({ session }) => {
         </button>
       </div>
 
-      {/* Published date */}
+      {/* Published Date */}
       <div className="text-center">
         <p className="text-gray-400 text-xs">
-          Published: {session.publishedDate || "Today"}
+          Published: {formatDate(session.publishedDate)}
         </p>
       </div>
     </div>

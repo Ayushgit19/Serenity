@@ -13,6 +13,7 @@ const userAuth = async (req, res, next) => {
             // Ensure req.body exists
             req.body = req.body || {};
             req.body.userId = tokenDecode.id;
+            req.userId = tokenDecode.id;
         } else {
             return res.json({ success: false, message: "Not Authorized, login again" });
         }

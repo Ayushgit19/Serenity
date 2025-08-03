@@ -1,8 +1,15 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { AppContext } from "./AppContext";
+
+axios.defaults.withCredentials = true;
 
 export const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
+  const { backendUrl, isLogggedIn } = useContext(AppContext);
+
   const [sessionTitle, setSessionTitle] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("10");
@@ -11,44 +18,104 @@ export const SessionProvider = ({ children }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [instructions, setInstructions] = useState([{ id: 1, text: "" }]);
 
-  // Use in-memory storage for drafts and sessions
   const [drafts, setDrafts] = useState([]);
   const [userSessions, setUserSessions] = useState([]);
 
-  // Add a published session
-  const addSession = (session) => {
-    const sessionWithId = { 
-      ...session, 
-      id: Date.now(),
-      publishedDate: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      isPublished: true
-    };
-    setUserSessions((prev) => [...prev, sessionWithId]);
+  const [sessionId, setSessionId] = useState(null);
+  useEffect(() => {
+    if (isLogggedIn) {
+      fetchDrafts();
+      fetchUserSessions();
+    }
+  }, [isLogggedIn]);
+
+  const fetchDrafts = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/my-sessions?type=draft"
+      );
+      setDrafts(data.sessions || []);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  // Add a draft with ID
-  const addDraft = (draft) => {
-    const draftWithId = { ...draft, id: Date.now() };
-    setDrafts((prev) => [...prev, draftWithId]);
+  const fetchUserSessions = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/my-sessions?type=published"
+      );
+      setUserSessions(data.sessions || []);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  // Delete draft by ID
-  const deleteDraft = (id) => {
-    setDrafts((prev) => prev.filter((d) => d.id !== id));
+  const addDraft = async () => {
+    try {
+      const data = {
+        sessionId, // for updating if exists
+        title: sessionTitle,
+        description,
+        duration,
+        category,
+        difficulty,
+        selectedImage,
+        instructions,
+      };
+
+      await axios.post(`${backendUrl}/api/my-sessions/save-draft`, data);
+      fetchDrafts();
+      setSessionId(null); 
+    } catch (error) {
+      console.log("Error saving draft", error);
+      toast.error(error.message);
+    }
   };
 
-  // Delete published session by ID
-  const deleteSession = (id) => {
-    setUserSessions((prev) => prev.filter((s) => s.id !== id));
+  const addSession = async () => {
+    try {
+      const data = {
+        sessionId, // for updating if exists
+        title: sessionTitle,
+        description,
+        duration,
+        category,
+        difficulty,
+        selectedImage,
+        instructions,
+      };
+
+      await axios.post(
+        backendUrl + "/api/my-sessions/publish",
+        data
+      );
+      fetchUserSessions();
+      setSessionId(null); 
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  // Edit published session (convert back to draft)
+  const deleteDraft = async (id) => {
+    try {
+      await axios.delete(backendUrl + `/api/my-sessions/${id}`);
+      fetchDrafts();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const deleteSession = async (id) => {
+    try {
+      await axios.delete(backendUrl + `/api/my-sessions/${id}`);
+      fetchUserSessions();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const editSession = (session) => {
-    // Load session data into context for editing
     setSessionTitle(session.title || "");
     setDescription(session.description || "");
     setDuration(session.duration || "10");
@@ -56,36 +123,38 @@ export const SessionProvider = ({ children }) => {
     setDifficulty(session.difficulty || "Beginner");
     setSelectedImage(session.selectedImage || 0);
     setInstructions(session.instructions || [{ id: 1, text: "" }]);
-    
-    // Remove from published sessions
-    deleteSession(session.id);
-    
-    // Add as draft
-    const draftData = {
-      title: session.title,
-      description: session.description,
-      duration: session.duration,
-      category: session.category,
-      difficulty: session.difficulty,
-      selectedImage: session.selectedImage,
-      instructions: session.instructions,
-      lastEdited: Date.now(),
-    };
-    addDraft(draftData);
   };
+
+
 
   return (
     <SessionContext.Provider
       value={{
-        sessionTitle, setSessionTitle,
-        description, setDescription,
-        duration, setDuration,
-        category, setCategory,
-        difficulty, setDifficulty,
-        selectedImage, setSelectedImage,
-        instructions, setInstructions,
-        userSessions, addSession, deleteSession, editSession,
-        drafts, addDraft, deleteDraft,
+        sessionTitle,
+        setSessionTitle,
+        description,
+        setDescription,
+        duration,
+        setDuration,
+        category,
+        setCategory,
+        difficulty,
+        setDifficulty,
+        selectedImage,
+        setSelectedImage,
+        instructions,
+        setInstructions,
+        userSessions,
+        fetchUserSessions,
+        addSession,
+        deleteSession,
+        editSession,
+        drafts,
+        fetchDrafts,
+        addDraft,
+        deleteDraft,
+        sessionId,
+        setSessionId
       }}
     >
       {children}

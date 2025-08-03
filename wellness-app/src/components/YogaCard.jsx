@@ -1,8 +1,10 @@
 import React from "react";
 import { LuClock } from "react-icons/lu";
 import { FaPlay } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const YogaCard = ({
+  _id,
   title,
   description,
   duration,
@@ -19,6 +21,16 @@ const YogaCard = ({
     beginner: "bg-green-100 text-green-800 border border-green-600",
     intermediate: "bg-yellow-100 text-yellow-800 border border-yellow-600",
     advanced: "bg-red-100 text-red-800 border border-red-600",
+  };
+
+  const navigate = useNavigate();
+
+  const handleStartClick = () => {
+    if (_id) {
+      navigate(`/my-published-sessions/${_id}`);
+    } else {
+      console.error("Session ID is undefined");
+    }
   };
 
   return (
@@ -69,7 +81,9 @@ const YogaCard = ({
             }}
           >
             <FaPlay className="text-xs" />
-            <span className="text-sm font-semibold">Start</span>
+            <span onClick={handleStartClick} className="text-sm font-semibold">
+              Start
+            </span>
           </button>
         </div>
 

@@ -16,7 +16,7 @@ const Drafts = () => {
   return (
     <div className="grid grid-cols-3 gap-5">
       {drafts.map((draft) => (
-        <DraftCard key={draft.id} draft={draft} />
+        <DraftCard key={draft._id} draft={draft} />
       ))}
     </div>
   );

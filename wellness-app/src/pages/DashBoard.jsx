@@ -1,55 +1,73 @@
-import React, { useState, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo, useEffect } from "react";
 import Hero from "../components/Hero";
 import Box from "../components/Box";
 import { FaPlay } from "react-icons/fa";
 import { RiDraftLine } from "react-icons/ri";
 import { SlBadge } from "react-icons/sl";
-import { sessions } from "../assets/assets";
 import YogaCard from "../components/YogaCard.jsx";
 import Drafts from "../components/Drafts";
 import PublishedSessions from "../components/PublishedSessions";
 import { SessionContext } from "../context/SessionContext";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { AppContext } from "../context/AppContext.jsx";
 
 const DashBoard = () => {
   const [activeTab, setActiveTab] = useState("All Sessions");
+  const [allPublishedSessions, setAllPublishedSessions] = useState([]);
   const { drafts, userSessions } = useContext(SessionContext);
+  const { backendUrl } = useContext(AppContext);
 
-  const totalSessions = useMemo(() => sessions.length + (userSessions?.length || 0), [sessions, userSessions]);
+  const totalSessions = useMemo(
+    () => allPublishedSessions?.length || 0,
+    [allPublishedSessions]
+  );
   const draftCount = drafts?.length || 0;
-
   const tabList = ["All Sessions", "My Drafts", "My Sessions"];
 
-  const allSessions = useMemo(() => (
-    <div className="grid grid-cols-3 gap-5">
-      {sessions.map((session) => (
-        <YogaCard
-          key={session.id}
-          title={session.title}
-          description={session.description}
-          duration={session.duration}
-          instructor={session.instructor}
-          date={session.date}
-          tags={session.tags}
-          image={session.image}
-        />
-      ))}
-      {userSessions?.map((session) => (
-        <YogaCard
-          key={`user-${session.id}`}
-          title={session.title}
-          description={session.description}
-          duration={`${session.duration} min`}
-          instructor="You"
-          date={session.publishedDate}
-          tags={[
-            session.category?.toLowerCase(),
-            session.difficulty?.toLowerCase(),
-          ].filter(Boolean)}
-          image={`https://picsum.photos/seed/${session.id}/400/300`}
-        />
-      ))}
-    </div>
-  ), [sessions, userSessions]);
+  useEffect(() => {
+    const fetchAllSessions = async () => {
+      try {
+        const { data } = await axios.get(backendUrl + "/api/sessions"); // should return all published sessions
+        setAllPublishedSessions(data.sessions || []);
+      } catch (err) {
+        toast.error("Failed to fetch all published sessions", err);
+      }
+    };
+
+    fetchAllSessions();
+  }, []);
+
+  const allSessions = useMemo(() => {
+    if (!allPublishedSessions?.length) {
+      return (
+        <p className="text-center text-gray-500 col-span-3">
+          No sessions found.
+        </p>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        {allPublishedSessions.map((session) => (
+          <YogaCard
+            key={session._id}
+            _id={session._id}
+            title={session.title}
+            description={session.description}
+            duration={`${session.duration} min`}
+            instructor="You"
+            date={session.publishedDate || "Today"}
+            tags={[
+              session.category?.toLowerCase(),
+              session.difficulty?.toLowerCase(),
+            ].filter(Boolean)}
+            image={`https://picsum.photos/seed/${session._id}/400/300`}
+          />
+        ))}
+      </div>
+    );
+  }, [allPublishedSessions]);
 
   const renderContent = useMemo(() => {
     switch (activeTab) {
@@ -66,13 +84,32 @@ const DashBoard = () => {
 
   return (
     <div className="bg-gradient-to-r from-blue-600/5 via-purple-500/5 to-pink-500/5 min-h-screen pt-16">
-      <div className="max-w-[65%] mx-auto px-4">
+      <div className="max-w-[90%] md:max-w-[65%] mx-auto px-4">
         <Hero />
 
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          <Box title="Sessions Available" img={<FaPlay />} subTitle={totalSessions.toString()} backgound="blue" border="blue" />
-          <Box title="Your Drafts" img={<RiDraftLine />} subTitle={draftCount.toString()} backgound="pink" border="pink" />
-          <Box title="Wellness Score" img={<SlBadge />} subTitle="80%" backgound="green" border="green" />
+        {/* Stats Boxes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+          <Box
+            title="Sessions Available"
+            img={<FaPlay />}
+            subTitle={totalSessions.toString()}
+            backgound="blue"
+            border="blue"
+          />
+          <Box
+            title="Your Drafts"
+            img={<RiDraftLine />}
+            subTitle={draftCount.toString()}
+            backgound="pink"
+            border="pink"
+          />
+          <Box
+            title="Wellness Score"
+            img={<SlBadge />}
+            subTitle="80%"
+            backgound="green"
+            border="green"
+          />
         </div>
 
         {/* Tabs */}

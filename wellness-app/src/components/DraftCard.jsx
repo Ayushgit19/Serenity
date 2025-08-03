@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import { Clock, Edit, Upload } from "lucide-react";
 import { SessionContext } from "../context/SessionContext";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const DraftCard = ({ draft }) => {
+  const navigate = useNavigate();
   const {
     setSessionTitle,
     setDescription,
@@ -28,15 +30,8 @@ const DraftCard = ({ draft }) => {
 
   // Load draft into session context for editing
   const handleEdit = () => {
-    setSessionTitle(draft.title || "");
-    setDescription(draft.description || "");
-    setDuration(draft.duration || "10");
-    setCategory(draft.category || "Meditation");
-    setDifficulty(draft.difficulty || "Beginner");
-    setSelectedImage(draft.selectedImage || 0);
-    setInstructions(draft.instructions || [{ id: 1, text: "" }]);
-    
-    toast.success("Draft loaded for editing");
+    toast.success("Redirecting to edit draft...");
+    navigate(`/edit-draft/${draft._id}`);
   };
 
   // Publish the draft
@@ -58,7 +53,7 @@ const DraftCard = ({ draft }) => {
     };
 
     addSession(sessionData);
-    deleteDraft(draft.id);
+    deleteDraft(draft._id);
     toast.success("Session published successfully!");
   };
 

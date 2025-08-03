@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Save, Upload } from "lucide-react";
 import { SessionContext } from "../context/SessionContext";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 const PublishDraft = () => {
   const {
@@ -23,16 +24,7 @@ const PublishDraft = () => {
     setInstructions,
   } = useContext(SessionContext);
 
-  const commonData = {
-    title: sessionTitle,
-    description,
-    duration,
-    category,
-    difficulty,
-    selectedImage,
-    instructions,
-    lastEdited: Date.now(),
-  };
+
 
   const clearForm = () => {
     setSessionTitle("");
@@ -50,18 +42,24 @@ const PublishDraft = () => {
       return;
     }
 
-    addDraft(commonData);
+    addDraft(); 
     toast.success("Session saved as draft");
     clearForm();
   };
 
   const handlePublish = () => {
-    if (!sessionTitle || !description || !instructions.length || !instructions[0].text) {
+    if (
+      !sessionTitle ||
+      !description ||
+      !instructions.length ||
+      !instructions[0].text
+    ) {
       toast.error("Please complete the session before publishing");
       return;
     }
 
-    addSession(commonData);
+    addSession();
+
     toast.success("Session published successfully!");
     clearForm();
   };
