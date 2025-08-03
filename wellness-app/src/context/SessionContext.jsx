@@ -66,32 +66,29 @@ export const SessionProvider = ({ children }) => {
 
       await axios.post(`${backendUrl}/api/my-sessions/save-draft`, data);
       fetchDrafts();
-      setSessionId(null); 
+      setSessionId(null);
     } catch (error) {
       console.log("Error saving draft", error);
       toast.error(error.message);
     }
   };
 
-  const addSession = async () => {
-    try {
-      const data = {
-        sessionId, // for updating if exists
-        title: sessionTitle,
-        description,
-        duration,
-        category,
-        difficulty,
-        selectedImage,
-        instructions,
-      };
+  const addSession = async (sessionData = null) => {
+    const data = sessionData || {
+      sessionId,
+      title: sessionTitle,
+      description,
+      duration,
+      category,
+      difficulty,
+      selectedImage,
+      instructions,
+    };
 
-      await axios.post(
-        backendUrl + "/api/my-sessions/publish",
-        data
-      );
+    try {
+      await axios.post(`${backendUrl}/api/my-sessions/publish`, data);
       fetchUserSessions();
-      setSessionId(null); 
+      setSessionId(null);
     } catch (error) {
       toast.error(error.message);
     }
@@ -125,8 +122,6 @@ export const SessionProvider = ({ children }) => {
     setInstructions(session.instructions || [{ id: 1, text: "" }]);
   };
 
-
-
   return (
     <SessionContext.Provider
       value={{
@@ -154,7 +149,7 @@ export const SessionProvider = ({ children }) => {
         addDraft,
         deleteDraft,
         sessionId,
-        setSessionId
+        setSessionId,
       }}
     >
       {children}
