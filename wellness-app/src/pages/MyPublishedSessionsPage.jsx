@@ -75,7 +75,7 @@ const MyPublishedSessionsPage = () => {
     const fetchSession = async () => {
       try {
         const { data } = await axios.get(
-          `${backendUrl}/api/my-sessions/${id}`,
+          `${backendUrl}/api/published/${id}`,
           {
             withCredentials: true, // important if you're using cookies/auth middleware
           }
