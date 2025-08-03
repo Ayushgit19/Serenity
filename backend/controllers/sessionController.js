@@ -172,3 +172,15 @@ export const deleteSession = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to delete session" });
   }
 };
+
+export const getPublishedSession = async (req, res) => {
+  try {
+    const session = await Session.findOne({ _id: req.params.id, status: "published" });
+    if (!session) {
+      return res.status(404).json({ success: false, message: "Session not found" });
+    }
+    res.json({ success: true, session });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

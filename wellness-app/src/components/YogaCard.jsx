@@ -27,7 +27,7 @@ const YogaCard = ({
 
   const handleStartClick = () => {
     if (_id) {
-      navigate(`/my-published-sessions/${_id}`);
+      navigate(`/published/${_id}`);
     } else {
       console.error("Session ID is undefined");
     }

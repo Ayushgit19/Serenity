@@ -7,6 +7,7 @@ import {
   saveDraft,
   publishSession,
   deleteSession,
+  getPublishedSession
 } from "../controllers/sessionController.js";
 import userAuth from '../middleware/userAuth.js';
 
@@ -14,6 +15,7 @@ const sessionRouter = express.Router();
 
 sessionRouter.get("/sessions", getAllPublishedSessions);
 sessionRouter.get("/my-sessions", userAuth, getUserSessions);
+sessionRouter.get("/published/:id", getPublishedSession);
 sessionRouter.get("/my-sessions/:id", userAuth, getSingleSession);
 sessionRouter.post("/my-sessions/save-draft", userAuth, saveDraft);
 sessionRouter.post("/my-sessions/publish", userAuth, publishSession);
