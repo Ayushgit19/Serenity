@@ -20,7 +20,7 @@ const App = () => {
       {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
 
       <Routes>
-        <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/" element={<DashBoard />} />
         <Route path="/create-session" element={<CreateSession />} />
         <Route path="/login" element={<Login />} />
         <Route path="/email-verify" element={<EmailVerify />} />

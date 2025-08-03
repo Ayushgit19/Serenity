@@ -46,7 +46,7 @@ const Navbar = () => {
 
       data.success && setIsLoggedIn(false);
       data.success && setUserData(false);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }
@@ -55,7 +55,7 @@ const Navbar = () => {
   return (
     <header className="flex justify-around py-1 shadow-md bg-white/80 w-full items-center fixed z-30 backdrop-blur-sm">
       <div
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/")}
         className="flex cursor-pointer gap-2"
       >
         <div className="p-1 rounded-lg">
@@ -69,9 +69,9 @@ const Navbar = () => {
 
       <nav className="flex items-center">
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/")}
           className={`flex mr-1 items-center justify-center gap-2 px-5 h-10 rounded-2xl text-sm font-medium transition-colors duration-200 cursor-pointer ${isActive(
-            "/dashboard"
+            "/"
           )}`}
         >
           <RiGeminiLine />
