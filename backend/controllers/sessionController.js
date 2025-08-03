@@ -34,7 +34,7 @@ export const getUserSessions = async (req, res) => {
 // 3. Get one session by ID
 export const getSingleSession = async (req, res) => {
   try {
-    const session = await Session.findOne({_id: req.params.id, user_id: req.userId });
+    const session = await Session.findOne({_id: req.params.id});
     if (!session) {
       return res.status(404).json({ success: false, message: "Session not found" });
     }
