@@ -78,7 +78,7 @@ const Navbar = () => {
           Dashboard
         </button>
 
-        {isLogggedIn && <button
+        {isLogggedIn &&<button
           onClick={() => navigate("/create-session")}
           className={`px-5 mx-3 h-10 rounded-2xl text-sm font-medium transition-colors duration-200 cursor-pointer ${isActive(
             "/create-session"
