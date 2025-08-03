@@ -35,7 +35,7 @@ const Login = () => {
           setIsLoggedIn(true);
           toast.success("Registration successful!");
           getUserData();
-          navigate("/dashboard");
+          navigate("/");
         } else {
           toast.error(data.message || "Registration failed.");
         }
@@ -50,7 +50,7 @@ const Login = () => {
           setIsLoggedIn(true);
           toast.success("Login successful!");
           getUserData();
-          navigate("/dashboard");
+          navigate("/");
         } else {
           toast.error(data.message || "Login failed.");
         }
