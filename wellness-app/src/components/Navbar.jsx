@@ -13,7 +13,7 @@ import { RiFlowerLine } from "react-icons/ri";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userData, backendUrl, setUserData, setIsLoggedIn } =
+  const { userData, backendUrl, setUserData, setIsLoggedIn, isLogggedIn } =
     useContext(AppContext);
 
   const isActive = (path) =>
@@ -78,14 +78,14 @@ const Navbar = () => {
           Dashboard
         </button>
 
-        <button
+        {isLogggedIn && <button
           onClick={() => navigate("/create-session")}
           className={`px-5 mx-3 h-10 rounded-2xl text-sm font-medium transition-colors duration-200 cursor-pointer ${isActive(
             "/create-session"
           )}`}
         >
           Create Session
-        </button>
+        </button>}
 
         {userData ? (
           <div className="relative group cursor-pointer">
