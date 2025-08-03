@@ -47,7 +47,7 @@ Built with **MERN stack** and supports authentication, protected routes, draft m
 
 ## 📂 Folder Structure
 
-```bash
+
 .
 ├── client/           # React Frontend (Vite)
 └── server/           # Express Backend (API + MongoDB)
