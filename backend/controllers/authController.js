@@ -52,7 +52,7 @@ export const register = async (req, res) => {
                     </ul>
 
                     <p>Your journey to wellness begins now. Start by exploring your 
-                        <a href="https://serenity.example.com/dashboard" style="color: #D9239F; text-decoration: none;">Dashboard</a> and creating your first session!</p>
+                        <a href="https://serenity-ve74.vercel.app" style="color: #D9239F; text-decoration: none;">Dashboard</a> and creating your first session!</p>
 
                     <p>If you have any questions or need help, feel free to reply to this email.</p>
 
@@ -60,7 +60,7 @@ export const register = async (req, res) => {
 
                     <p style="font-size: 13px; color: #888;">With gratitude,<br/>The Serenity Team</p>
                     <p style="font-size: 13px;">
-                        <a href="https://serenity.example.com" style="color: #5712E0;">serenity.example.com</a>
+                        <a href="https://serenity-ve74.vercel.app" style="color: #5712E0;">serenity.example.com</a>
                     </p>
                     </div>
                 `,

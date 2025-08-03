@@ -51,7 +51,7 @@ const EmailVerify = () => {
       if (data.success) {
         toast.success(data.message);
         getUserData();
-        navigate("/dashboard");
+        navigate("/");
       } else {
         toast.error(data.message);
       }
@@ -62,7 +62,7 @@ const EmailVerify = () => {
 
   useEffect(() => {
     if (isLoggedIn && userData && userData.isVerified) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [isLoggedIn, userData]);
 
@@ -80,7 +80,7 @@ const EmailVerify = () => {
 
       {/* Top-left icon */}
       <div
-        onClick={navigate("/dashboard")}
+        onClick={navigate("/")}
         className="absolute top-4 left-4 p-1 rounded-lg cursor-pointer"
       >
         <RiFlowerLine className="h-10 w-10 text-white" />

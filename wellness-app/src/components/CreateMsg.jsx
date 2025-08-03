@@ -45,7 +45,7 @@ const CreateMsg = () => {
         </div>
 
         {/* Right Button */}
-        <button onClick={() => navigate('/dashboard')} className="border border-white/40 px-4 py-1 text-white rounded-md text-sm font-semibold bg-white/20 hover:bg-white/10 transition cursor-pointer">
+        <button onClick={() => navigate('/')} className="border border-white/40 px-4 py-1 text-white rounded-md text-sm font-semibold bg-white/20 hover:bg-white/10 transition cursor-pointer">
           Cancel
         </button>
       </div>

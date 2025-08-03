@@ -95,7 +95,7 @@ const ResetPassword = () => {
       <div className="absolute inset-0 bg-black opacity-25 -z-10"></div>
 
       <div
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/")}
         className="absolute top-4 left-4 p-1 rounded-lg cursor-pointer"
       >
         <RiFlowerLine className="h-10 w-10 text-white" />
