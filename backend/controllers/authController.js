@@ -184,6 +184,7 @@ export const sendVerifyOtp = async (req, res) => {
 // Verify the e-mail using otp
 export const verifyEmail = async (req, res) => {
     const {userId, otp} = req.body
+    console.log(userId, otp)
 
     if(!userId || !otp){
         return res.json({success:false, message:"Missing details"})
@@ -256,6 +257,39 @@ export const sendResetOTP = async (req, res) => {
 
         return res.json({success: true, message:"OTP sent to your email"})
 
+
+    } catch (error) {
+        return res.json({success:false, message:error.message})
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    const {email, otp, newPassword} = req.body;
+
+    if(!email || !otp || !newPassword){
+        return res.json({success:false, message:"Email, OTP and new password are required"})
+    }
+
+    try {
+        const user = await User.findOne({email})
+
+        if(!user){
+            return res.json({success:false, message:"User not found"})
+        }
+
+        if(!user.resetOtp || user.resetOtp !== otp)
+            return res.json({success:false, message:"Invalid OTP"})
+
+        if(user.resetOtpExpireAt < Date.now())
+            return res.json({success:false, message:"OTP expired"})
+
+         user.password_hash = newPassword
+         user.resetOtp = ''
+         user.resetOtpExpireAt = 0
+
+         await user.save()
+
+         return res.json({success: true, message:"Password has been reset successfully"})
 
     } catch (error) {
         return res.json({success:false, message:error.message})

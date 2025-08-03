@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { MdOutlineStarOutline } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import pic1 from "../assets/pic1.webp";
 import mountain from "../assets/6205248.jpg"
+import { AppContext } from "../context/AppContext";
 
 const Hero = () => {
+
+  const {userData} = useContext(AppContext)
+
   return (
     <div className="relative rounded-3xl overflow-hidden min-h-[200px] mt-4 shadow-md">
       {/* Background image */}
@@ -25,7 +29,7 @@ const Hero = () => {
 
           <div className="flex flex-col justify-center mb-4">
             <h1 className="text-2xl font-bold text-white mb-1  ">
-              Good morning, Username
+              Good morning, {userData ? userData.name : 'Username'}
             </h1>
             <p className="text-white/70 text-sm mt-1 max-w-[60%] ">
               Ready to continue your wellness journey? Discover new sessions or
