@@ -11,11 +11,12 @@ import { SessionContext } from "../context/SessionContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AppContext } from "../context/AppContext.jsx";
+import { imageOptions } from "../assets/assets";
 
 const DashBoard = () => {
   const [activeTab, setActiveTab] = useState("All Sessions");
   const [allPublishedSessions, setAllPublishedSessions] = useState([]);
-  const { drafts, userSessions } = useContext(SessionContext);
+  const { drafts, userSessions} = useContext(SessionContext);
   const { backendUrl } = useContext(AppContext);
 
   const totalSessions = useMemo(
@@ -57,12 +58,12 @@ const DashBoard = () => {
             description={session.description}
             duration={`${session.duration} min`}
             instructor="You"
-            date={session.publishedDate || "Today"}
+            date={new Date(session.createdAt).toLocaleDateString()}
             tags={[
               session.category?.toLowerCase(),
               session.difficulty?.toLowerCase(),
             ].filter(Boolean)}
-            image={`https://picsum.photos/seed/${session._id}/400/300`}
+            image={imageOptions[session.selectedImage]}
           />
         ))}
       </div>
