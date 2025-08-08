@@ -32,13 +32,18 @@ const Preview = () => {
     <div className="rounded-2xl shadow-md overflow-hidden bg-white">
       {/* Image section */}
       <div className="relative">
-        <img src={imageUrl} alt="Session" className="w-full h-40 object-cover" />
+        <img
+          src={imageUrl}
+          alt="Session"
+          className="w-full h-40 object-cover"
+        />
         <div className="absolute bottom-2 left-2 flex flex-wrap gap-2">
           {[category, difficulty].map((tag, i) => (
             <span
               key={i}
               className={`text-[10px] px-2 py-[2px] rounded-full shadow-sm capitalize ${
-                tagStyles[tag.toLowerCase()] || "bg-gray-200 text-gray-800 border border-gray-400"
+                tagStyles[tag.toLowerCase()] ||
+                "bg-gray-200 text-gray-800 border border-gray-400"
               }`}
             >
               {tag}
@@ -49,8 +54,13 @@ const Preview = () => {
 
       {/* Content section */}
       <div className="p-4 flex flex-col gap-2">
-        <h2 className="text-sm font-semibold">{sessionTitle || "Session Title"}</h2>
-        <p className="text-xs text-gray-600">{description || "Session description goes here."}</p>
+        <h2 className="text-sm font-semibold break-words whitespace-pre-wrap">
+          {sessionTitle || "Session Title"}
+        </h2>
+
+        <p className="text-xs text-gray-600 break-words whitespace-pre-wrap">
+          {description || "Session description goes here."}
+        </p>
 
         <div className="flex items-center gap-2 text-xs text-gray-600 mt-1">
           <LuClock className="w-4 h-4" />
@@ -61,7 +71,9 @@ const Preview = () => {
 
         {/* Instructions */}
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-medium text-gray-700">Instructions</span>
+          <span className="text-xs font-medium text-gray-700">
+            Instructions
+          </span>
           {instructions.length > 0 ? (
             instructions.map((step, index) => (
               <div key={index} className="flex items-start gap-2">

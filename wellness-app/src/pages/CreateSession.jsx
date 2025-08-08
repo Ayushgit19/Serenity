@@ -13,12 +13,14 @@ const CreateSession = () => {
       <div className="max-w-[60%] mx-auto px-4">
         <CreateMsg />
         <div className="mt-6 flex gap-5">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 flex-1">
+            {" "}
             <SessionDetails />
             <SessionImage />
             <Instructions />
           </div>
-          <div className="flex flex-col gap-4">
+
+          <div className="flex flex-col gap-4 w-[300px] shrink-0">
             <Preview />
             <PublishDraft />
           </div>

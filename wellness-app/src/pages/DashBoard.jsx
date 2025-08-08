@@ -16,8 +16,9 @@ import { imageOptions } from "../assets/assets";
 const DashBoard = () => {
   const [activeTab, setActiveTab] = useState("All Sessions");
   const [allPublishedSessions, setAllPublishedSessions] = useState([]);
-  const { drafts, userSessions} = useContext(SessionContext);
+  const { drafts, userSessions } = useContext(SessionContext);
   const { backendUrl } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
   const totalSessions = useMemo(
     () => allPublishedSessions?.length || 0,
@@ -29,10 +30,12 @@ const DashBoard = () => {
   useEffect(() => {
     const fetchAllSessions = async () => {
       try {
-        const { data } = await axios.get(backendUrl + "/api/sessions"); // should return all published sessions
+        const { data } = await axios.get(backendUrl + "/api/sessions");
         setAllPublishedSessions(data.sessions || []);
       } catch (err) {
-        toast.error("Failed to fetch all published sessions", err);
+        toast.error("Failed to fetch all published sessions");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,6 +43,14 @@ const DashBoard = () => {
   }, []);
 
   const allSessions = useMemo(() => {
+    if (loading) {
+      return (
+        <p className="text-center text-gray-500 col-span-3">
+          Loading sessions...
+        </p>
+      );
+    }
+
     if (!allPublishedSessions?.length) {
       return (
         <p className="text-center text-gray-500 col-span-3">
@@ -68,7 +79,7 @@ const DashBoard = () => {
         ))}
       </div>
     );
-  }, [allPublishedSessions]);
+  }, [loading, allPublishedSessions]);
 
   const renderContent = useMemo(() => {
     switch (activeTab) {
