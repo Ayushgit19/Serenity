@@ -3,7 +3,7 @@ import Session from "../models/Session.js";
 // 1. Get all published sessions (public)
 export const getAllPublishedSessions = async (req, res) => {
   try {
-    const sessions = await Session.find({ status: "published" })
+    const sessions = await Session.find({ status: "published" }).populate("user_id", "name");
 
     return res.json({ success: true, sessions })
   } catch (error) {

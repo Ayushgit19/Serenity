@@ -68,7 +68,7 @@ const DashBoard = () => {
             title={session.title}
             description={session.description}
             duration={`${session.duration} min`}
-            instructor="You"
+            instructor={session?.user_id?.name || "Unknown"}
             date={new Date(session.createdAt).toLocaleDateString()}
             tags={[
               session.category?.toLowerCase(),
