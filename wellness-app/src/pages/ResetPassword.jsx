@@ -62,13 +62,13 @@ const ResetPassword = () => {
     setOtp(otpArray.join(""));
     try {
       const {data} = await axios.post(
-        backendUrl + "api/auth/verify-reset-otp", {otp}
+        backendUrl + "api/auth/verify-reset-otp", {otpArray}
       )
       if (data.success) {
         setIsOtpSubmitted(true)
         toast.success(data.message);
         getUserData();
-        navigate("/");
+        navigate("/login");
       } else {
         toast.error(data.message);
       }
@@ -181,7 +181,7 @@ const ResetPassword = () => {
                 />
               ))}
           </div>
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full">
+          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full cursor-pointer">
             Submit
           </button>
         </form>
