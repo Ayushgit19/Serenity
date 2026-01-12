@@ -1,4 +1,5 @@
 import Session from "../models/Session.js";
+import User from "../models/User.js";
 
 // 1. Get all published sessions (public)
 export const getAllPublishedSessions = async (req, res) => {
