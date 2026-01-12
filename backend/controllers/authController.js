@@ -173,7 +173,7 @@ export const sendVerifyOtp = async (req, res) => {
 
         await transporter.sendMail(mailOptions)
 
-        res.json({ success: true, message: 'Verification OTP sent on email' })
+        res.json({success: true, message: 'Verification OTP sent on email'})
 
 
     } catch (error) {
@@ -183,25 +183,25 @@ export const sendVerifyOtp = async (req, res) => {
 
 // Verify the e-mail using otp
 export const verifyEmail = async (req, res) => {
-    const { userId, otp } = req.body
+    const {userId, otp} = req.body
     console.log(userId, otp)
 
-    if (!userId || !otp) {
-        return res.json({ success: false, message: "Missing details" })
+    if(!userId || !otp){
+        return res.json({success:false, message:"Missing details"})
     }
 
     try {
         const user = await User.findById(userId);
-        if (!user) {
-            return res.json({ success: false, message: "User not found" })
+        if(!user){
+            return  res.json({success:false, message:"User not found"})
         }
 
-        if (user.verifyOtp === '' || user.verifyOtp != otp) {
-            return res.json({ success: false, message: "Invalid OTP" })
+        if(user.verifyOtp === '' || user.verifyOtp != otp){
+            return  res.json({success:false, message:"Invalid OTP"})
         }
 
-        if (user.verifyOtpExpireAt < Date.now)
-            return res.json({ success: false, message: "OTP expired" })
+        if(user.verifyOtpExpireAt < Date.now)
+            return  res.json({success:false, message:"OTP expired"})
 
         user.isVerified = true;
         user.verifyOtp = '';
@@ -209,36 +209,36 @@ export const verifyEmail = async (req, res) => {
 
         await user.save();
 
-        return res.json({ success: true, message: "Account verified successfully" })
+        return res.json({success:true, message:"Account verified successfully"})
 
 
     } catch (error) {
-        return res.json({ success: false, message: error.message })
+        return res.json({success:false, message:error.message})
     }
 }
 
 // Check if user is authenticated
 export const isAuthenticated = async (req, res) => {
     try {
-        return res.json({ success: true })
+        return res.json({success: true})
 
     } catch (error) {
-        return res.json({ success: false, message: error.message })
+         return res.json({success:false, message:error.message})
     }
 }
 
 // Send password resend OTP
 export const sendResetOTP = async (req, res) => {
-    const { email } = req.body;
+    const {email} = req.body;
 
-    if (!email)
-        return res.json({ success: false, message: "Email is required" })
+    if(!email)
+        return res.json({success:false, message:"Email is required"})
 
     try {
-        const user = await User.findOne({ email })
+        const user = await User.findOne({email})
 
-        if (!user) {
-            return res.json({ success: false, message: "User not found" })
+        if(!user){
+            return res.json({success:false, message:"User not found"})
         }
 
         const otp = String(Math.floor(100000 + Math.random() * 900000))
@@ -255,81 +255,43 @@ export const sendResetOTP = async (req, res) => {
 
         await transporter.sendMail(mailOptions)
 
-        return res.json({ success: true, message: "OTP sent to your email" })
+        return res.json({success: true, message:"OTP sent to your email"})
 
 
     } catch (error) {
-        return res.json({ success: false, message: error.message })
+        return res.json({success:false, message:error.message})
     }
-}
-
-// Check Otp submitted
-
-export const verifyResetOtp = async (req, res) => {
-    const { userId, otp } = req.body;
-    if (!otp)
-        return res.json({ success: false, message: "OTP is required" })
-
-    if (!userId || !otp) {
-        return res.json({ success: false, message: "Missing details" })
-    }
-
-    try {
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.json({ success: false, message: "User not found" })
-        }
-
-        if (user.resetOtp === '' || user.resetOtp != otp) {
-            return res.json({ success: false, message: "Invalid OTP" })
-        }
-
-        if (user.resetOtpExpireAt < Date.now)
-            return res.json({ success: false, message: "OTP expired" })
-
-        user.resetOtp = '';
-        user.resetOtpExpireAt = 0
-
-        await user.save();
-
-        return res.json({ success: true, message: "OTP Matched" })
-
-
-    } catch (error) {
-        return res.json({ success: false, message: error.message })
-    }
-
 }
 
 export const resetPassword = async (req, res) => {
-    const { email, otp, newPassword } = req.body;
+    const {email, otp, newPassword} = req.body;
 
-    if (!email || !otp || !newPassword) {
-        return res.json({ success: false, message: "Email, OTP and new password are required" })
+    if(!email || !otp || !newPassword){
+        return res.json({success:false, message:"Email, OTP and new password are required"})
     }
 
     try {
-        const user = await User.findOne({ email })
+        const user = await User.findOne({email})
 
-        if (!user) {
-            return res.json({ success: false, message: "User not found" })
+        if(!user){
+            return res.json({success:false, message:"User not found"})
         }
 
-        if (!user.resetOtp || user.resetOtp !== otp)
-            return res.json({ success: false, message: "Invalid OTP" })
+        if(!user.resetOtp || user.resetOtp !== otp)
+            return res.json({success:false, message:"Invalid OTP"})
 
-        if (user.resetOtpExpireAt < Date.now())
-            return res.json({ success: false, message: "OTP expired" })
+        if(user.resetOtpExpireAt < Date.now())
+            return res.json({success:false, message:"OTP expired"})
 
-        user.password_hash = newPassword
-        user.resetOtp = ''
-        user.resetOtpExpireAt = 0
+         user.password_hash = newPassword
+         user.resetOtp = ''
+         user.resetOtpExpireAt = 0
 
-        await user.save()
+         await user.save()
 
-        return res.json({ success: true, message: "Password has been reset successfully" })
+         return res.json({success: true, message:"Password has been reset successfully"})
 
     } catch (error) {
-        return res.json({ success: false, message: error.message })
+        return res.json({success:false, message:error.message})
     }
 }
